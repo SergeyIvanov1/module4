@@ -1,53 +1,38 @@
 package com.ivanov_sergey.module4.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Getter
+@Setter
 @Entity
-@Table(name = "country", schema = "module4", catalog = "")
-public class CountryEntity {
+@Table(name = "country", schema = "module4")
+public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "country_id")
-    private Object countryId;
+    private Integer countryId;
     @Basic
-    @Column(name = "country")
+    @Column(name = "country", length = 50)
     private String country;
     @Basic
     @Column(name = "last_update")
     private Timestamp lastUpdate;
 
-    public Object getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Object countryId) {
-        this.countryId = countryId;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CountryEntity that = (CountryEntity) o;
-        return Objects.equals(countryId, that.countryId) && Objects.equals(country, that.country) && Objects.equals(lastUpdate, that.lastUpdate);
+        Country that = (Country) o;
+        return Objects.equals(countryId, that.countryId)
+                && Objects.equals(country, that.country)
+                && Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override

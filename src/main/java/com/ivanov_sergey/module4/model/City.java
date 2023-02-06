@@ -1,64 +1,42 @@
 package com.ivanov_sergey.module4.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Getter
+@Setter
 @Entity
-@Table(name = "city", schema = "module4", catalog = "")
-public class CityEntity {
+@Table(name = "city", schema = "module4")
+public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "city_id")
-    private Object cityId;
+    private Integer cityId;
     @Basic
-    @Column(name = "city")
+    @Column(name = "city", length = 50)
     private String city;
     @Basic
     @Column(name = "country_id")
-    private Object countryId;
+    private Integer countryId;
     @Basic
     @Column(name = "last_update")
     private Timestamp lastUpdate;
-
-    public Object getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Object cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Object getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Object countryId) {
-        this.countryId = countryId;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CityEntity that = (CityEntity) o;
-        return Objects.equals(cityId, that.cityId) && Objects.equals(city, that.city) && Objects.equals(countryId, that.countryId) && Objects.equals(lastUpdate, that.lastUpdate);
+        City that = (City) o;
+        return Objects.equals(cityId, that.cityId)
+                && Objects.equals(city, that.city)
+                && Objects.equals(countryId, that.countryId)
+                && Objects.equals(lastUpdate, that.lastUpdate);
     }
 
     @Override
