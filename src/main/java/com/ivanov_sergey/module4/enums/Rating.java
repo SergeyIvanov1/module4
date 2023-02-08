@@ -12,36 +12,37 @@ public enum Rating {
     PG13("PG-13"),
     R("R"),
     NC17("NC-17");
-
-    private static final Map<String, Rating> LOOKUP = Arrays.stream(values())
-            .collect(Collectors.toMap(Rating::getRating, Function.identity()));
-
-    private final String rating;
+    private final String value;
 
     Rating(final String rating) {
-        this.rating = rating;
+        this.value = rating;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public static Rating fromString(final String rating) {
-        // You may want to include handling for the case where the given string
-        // doesn't map to anything - implementation is up to you.
-        return LOOKUP.get(rating);
-    }
-
-    @javax.persistence.Converter(autoApply = true)
-    public static class RatingConverter implements AttributeConverter<Rating, String> {
-        @Override
-        public String convertToDatabaseColumn(final Rating attribute) {
-            return attribute.getRating();
-        }
-
-        @Override
-        public Rating convertToEntityAttribute(final String dbData) {
-            return Rating.fromString(dbData);
-        }
-    }
+//    private static final Map<String, Rating> LOOKUP = Arrays.stream(values())
+//            .collect(Collectors.toMap(Rating::getValue, Function.identity()));
+//
+//
+//
+//    public String getValue() {
+//        return value;
+//    }
+//
+//    public static Rating fromString(final String rating) {
+//        // You may want to include handling for the case where the given string
+//        // doesn't map to anything - implementation is up to you.
+//        return LOOKUP.get(rating);
+//    }
+//
+//    @javax.persistence.Converter(autoApply = true)
+//    public static class RatingConverter implements AttributeConverter<Rating, String> {
+//        @Override
+//        public String convertToDatabaseColumn(final Rating attribute) {
+//            return attribute.getValue();
+//        }
+//
+//        @Override
+//        public Rating convertToEntityAttribute(final String dbData) {
+//            return Rating.fromString(dbData);
+//        }
+//    }
 }

@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,8 +18,8 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "address_id")
-    private Short addressId;
-    @Basic
+    private Short id;
+
     @Column(name = "address", length = 50)
     private String address;
 
@@ -31,36 +30,16 @@ public class Address {
     private String district;
 
     @ManyToOne
-    @JoinColumn(name = "city_id", columnDefinition = "SMALLINT")
+    @JoinColumn(name = "city_id")
     private City cityId;
 
-    @Column(name = "postal_code", length = 10)
+    @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "phone", length = 20)
+    @Column(name = "phone")
     private String phone;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address that = (Address) o;
-        return Objects.equals(addressId, that.addressId)
-                && Objects.equals(address, that.address)
-                && Objects.equals(address2, that.address2)
-                && Objects.equals(district, that.district)
-                && Objects.equals(cityId, that.cityId)
-                && Objects.equals(postalCode, that.postalCode)
-                && Objects.equals(phone, that.phone)
-                && Objects.equals(lastUpdate, that.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(addressId, address, address2, district, cityId, postalCode, phone, lastUpdate);
-    }
 }

@@ -1,6 +1,7 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -17,49 +18,30 @@ import java.util.Objects;
 @Entity
 @Table(name = "payment", schema = "movie")
 public class Payment {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
-    private Short paymentId;
+    private Short id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", columnDefinition = "SMALLINT")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "staff_id", columnDefinition = "TINYINT")
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    @ManyToOne
-    @JoinColumn(name = "rental_id", columnDefinition = "INT")
+    @OneToOne
+    @JoinColumn(name = "rental_id")
     private Rental rentalId;
 
-    @Column(name = "amount")
     private BigDecimal amount;
 
-    @Column(name = "payment_date", columnDefinition = "DATETIME")
+    @Column(name = "payment_date")
+    @CreationTimestamp
     private LocalDateTime paymentDate;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private Timestamp lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment payment = (Payment) o;
-        return Objects.equals(paymentId, payment.paymentId)
-                && Objects.equals(customer, payment.customer)
-                && Objects.equals(staff, payment.staff)
-                && Objects.equals(rentalId, payment.rentalId)
-                && Objects.equals(amount, payment.amount)
-                && Objects.equals(paymentDate, payment.paymentDate)
-                && Objects.equals(lastUpdate, payment.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(paymentId, customer, staff, rentalId, amount, paymentDate, lastUpdate);
-    }
 }

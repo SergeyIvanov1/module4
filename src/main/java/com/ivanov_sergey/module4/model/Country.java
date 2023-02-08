@@ -15,30 +15,15 @@ import java.util.Objects;
 @Entity
 @Table(name = "country", schema = "movie")
 public class Country {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_id")
-    private Byte countryId;
+    private Short id;
 
     @Column(name = "country", length = 50)
-    private String country;
+    private String title;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private Timestamp lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Country that = (Country) o;
-        return Objects.equals(countryId, that.countryId)
-                && Objects.equals(country, that.country)
-                && Objects.equals(lastUpdate, that.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(countryId, country, lastUpdate);
-    }
 }

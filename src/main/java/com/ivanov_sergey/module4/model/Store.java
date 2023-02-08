@@ -16,36 +16,20 @@ import java.util.Objects;
 @Entity
 @Table(name = "store", schema = "movie")
 public class Store {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Byte storeId;
 
-    @ManyToOne
-    @JoinColumn(name = "manager_staff_id", columnDefinition = "TINYINT")
+    @OneToOne
+    @JoinColumn(name = "manager_staff_id")
     private Staff staff;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id", columnDefinition = "SMALLINT")
+    @OneToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Store store = (Store) o;
-        return Objects.equals(storeId, store.storeId)
-                && Objects.equals(staff, store.staff)
-                && Objects.equals(address, store.address)
-                && Objects.equals(lastUpdate, store.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(storeId, staff, address, lastUpdate);
-    }
 }

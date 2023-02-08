@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,43 +18,27 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "rental_id")
-    private Integer rentalId;
+    private Integer id;
 
-    @Column(name = "rental_date", columnDefinition = "DATETIME")
+    @Column(name = "rental_date")
     private LocalDateTime rentalDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inventory_id", columnDefinition = "INT")
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "inventory_id")
     private Inventory inventory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", columnDefinition = "SMALLINT")
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @Column(name = "return_date", columnDefinition = "DATETIME")
+    @Column(name = "return_date")
     private LocalDateTime returnDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "staff_id", columnDefinition = "TINYINT")
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Rental rental = (Rental) o;
-        return Objects.equals(rentalId, rental.rentalId) && Objects.equals(rentalDate, rental.rentalDate) && Objects.equals(inventory, rental.inventory) && Objects.equals(customer, rental.customer) && Objects.equals(returnDate, rental.returnDate) && Objects.equals(staff, rental.staff) && Objects.equals(lastUpdate, rental.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(rentalId, rentalDate, inventory, customer, returnDate, staff, lastUpdate);
-    }
 }

@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,27 +18,12 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "language_id")
-    private Byte languageId;
+    private Byte id;
 
-    @Column(name = "name", length = 20)
+    @Column(name = "name", length = 20, columnDefinition = "char")
     private String name;
 
     @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Language that = (Language) o;
-        return Objects.equals(languageId, that.languageId)
-                && Objects.equals(name, that.name)
-                && Objects.equals(lastUpdate, that.lastUpdate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(languageId, name, lastUpdate);
-    }
 }

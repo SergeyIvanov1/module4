@@ -16,33 +16,21 @@ import java.util.Objects;
 @Entity
 @Table(name = "inventory", schema = "movie")
 public class Inventory {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inventory_id")
     private Integer inventoryId;
 
-    @UpdateTimestamp
-    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
-    private LocalDateTime lastUpdate;
-
     @ManyToOne
-    @JoinColumn(name = "film_id", columnDefinition = "SMALLINT")
+    @JoinColumn(name = "film_id")
     private Film film;
 
     @ManyToOne
-    @JoinColumn(name = "store_id", columnDefinition = "TINYINT")
+    @JoinColumn(name = "store_id")
     private Store store;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Inventory inventory = (Inventory) o;
-        return Objects.equals(inventoryId, inventory.inventoryId) && Objects.equals(lastUpdate, inventory.lastUpdate) && Objects.equals(film, inventory.film) && Objects.equals(store, inventory.store);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(inventoryId, lastUpdate, film, store);
-    }
+    @UpdateTimestamp
+    @Column(name = "last_update")
+    private LocalDateTime lastUpdate;
 }
