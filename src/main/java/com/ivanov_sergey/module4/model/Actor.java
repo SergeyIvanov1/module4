@@ -1,9 +1,12 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,21 +15,29 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "actor", schema = "module4")
+@Table(name = "actor", schema = "movie")
 public class Actor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "actor_id")
-    private Integer actorId;
-    @Basic
+    private Short actorId;
+
     @Column(name = "first_name", length = 45)
     private String firstName;
-    @Basic
+
     @Column(name = "last_name", length = 45)
     private String lastName;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "film_actor",
+            joinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id")
+    )
+    private List<Film> films;
 
     @Override
     public boolean equals(Object o) {

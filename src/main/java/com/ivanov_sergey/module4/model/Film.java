@@ -2,11 +2,12 @@ package com.ivanov_sergey.module4.model;
 
 import com.ivanov_sergey.module4.enums.Rating;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -14,70 +15,100 @@ import java.util.Objects;
 @ToString
 @Getter @Setter
 @Entity
-@Table(name = "film", schema = "module4", catalog = "")
+@Table(name = "film", schema = "movie")
 public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "film_id")
-    private Integer filmId;
-    @Basic
+    private Short filmId;
+
     @Column(name = "title", length = 128)
     private String title;
-    @Basic
+
     @Column(name = "description")
     private String description;
-    @Basic
-    @Column(name = "release_year")
-    private Date releaseYear;
-    @Basic
-    @Column(name = "language_id")
-    private Integer languageId;
-    @Basic
-    @Column(name = "original_language_id")
-    private Integer originalLanguageId;
-    @Basic
+
+    @Column(name = "release_year", columnDefinition = "YEAR")
+    private Short releaseYear;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id", columnDefinition = "TINYINT")
+    private Language language;
+
+//    @ManyToOne
+//    @JoinColumn(name = "language_id", columnDefinition = "TINYINT")
+    @Transient
+    private Language originalLanguageId;
+
     @Column(name = "rental_duration")
-    private Integer rentalDuration;
-    @Basic
+    private Byte rentalDuration;
+
     @Column(name = "rental_rate")
-    private Double rentalRate;
-    @Basic
+    private BigDecimal rentalRate;
+
     @Column(name = "length")
-    private Integer length;
-    @Basic
+    private Short length;
+
     @Column(name = "replacement_cost")
-    private Double replacementCost;
-    @Basic
+    private BigDecimal replacementCost;
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "rating")
+//    private Rating rating;
     @Column(name = "rating")
-    private Rating rating;
-    @Basic
+    private String rating;
+
     @Column(name = "special_features")
     private String specialFeatures;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "film_actor",
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "actor_id")
+    )
+    @ToString.Exclude
+    private List<Actor> actors;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "film_category",
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    )
+    @ToString.Exclude
+    private List<Category> categories;
+
+    @OneToOne
+    @JoinColumn(name = "film_id")
+    private FilmText filmText;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Film that = (Film) o;
-        return Objects.equals(filmId, that.filmId)
-                && Objects.equals(title, that.title)
-                && Objects.equals(description, that.description)
-                && Objects.equals(releaseYear, that.releaseYear)
-                && Objects.equals(languageId, that.languageId)
-                && Objects.equals(originalLanguageId, that.originalLanguageId)
-                && Objects.equals(rentalDuration, that.rentalDuration)
-                && Objects.equals(rentalRate, that.rentalRate)
-                && Objects.equals(length, that.length)
-                && Objects.equals(replacementCost, that.replacementCost)
-                && Objects.equals(rating, that.rating) && Objects.equals(specialFeatures, that.specialFeatures)
-                && Objects.equals(lastUpdate, that.lastUpdate);
+        Film film = (Film) o;
+        return Objects.equals(filmId, film.filmId)
+                && Objects.equals(title, film.title)
+                && Objects.equals(description, film.description)
+                && Objects.equals(releaseYear, film.releaseYear)
+                && Objects.equals(language, film.language)
+                && Objects.equals(originalLanguageId, film.originalLanguageId)
+                && Objects.equals(rentalDuration, film.rentalDuration)
+                && Objects.equals(rentalRate, film.rentalRate)
+                && Objects.equals(length, film.length)
+                && Objects.equals(replacementCost, film.replacementCost)
+                && rating == film.rating
+                && Objects.equals(specialFeatures, film.specialFeatures)
+                && Objects.equals(lastUpdate, film.lastUpdate)
+                && Objects.equals(actors, film.actors)
+                && Objects.equals(categories, film.categories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filmId, title, description, releaseYear, languageId, originalLanguageId, rentalDuration, rentalRate, length, replacementCost, rating, specialFeatures, lastUpdate);
+        return Objects.hash(filmId, title, description, releaseYear, language, originalLanguageId, rentalDuration, rentalRate, length, replacementCost, rating, specialFeatures, lastUpdate, actors, categories);
     }
 }

@@ -1,6 +1,7 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,17 +13,18 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "country", schema = "module4")
+@Table(name = "country", schema = "movie")
 public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "country_id")
-    private Integer countryId;
-    @Basic
+    private Byte countryId;
+
     @Column(name = "country", length = 50)
     private String country;
-    @Basic
-    @Column(name = "last_update")
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
     private Timestamp lastUpdate;
 
     @Override

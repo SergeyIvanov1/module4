@@ -1,9 +1,12 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,36 +15,39 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "customer", schema = "module4")
+@Table(name = "customer", schema = "movie")
 public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "customer_id")
-    private Integer customerId;
-    @Basic
-    @Column(name = "store_id")
-    private Integer storeId;
-    @Basic
+    private Short customerId;
+
     @Column(name = "first_name", length = 45)
     private String firstName;
-    @Basic
+
     @Column(name = "last_name", length = 45)
     private String lastName;
-    @Basic
+
     @Column(name = "email", length = 50)
     private String email;
-    @Basic
-    @Column(name = "address_id")
-    private Integer addressId;
-    @Basic
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", columnDefinition = "SMALLINT")
+    private Address addressId;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", columnDefinition = "TINYINT")
+    private Store storeId;
     @Column(name = "active")
-    private boolean active;
-    @Basic
-    @Column(name = "create_date")
-    private Timestamp createDate;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+    private Byte active;
+
+    @CreationTimestamp
+    @Column(name = "create_date", columnDefinition = "DATETIME")
+    private LocalDateTime createDate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
 
     @Override
     public boolean equals(Object o) {

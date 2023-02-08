@@ -1,10 +1,10 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Blob;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -14,63 +14,58 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "staff", schema = "module4")
+@Table(name = "staff", schema = "movie")
 public class Staff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "staff_id")
-    private Integer staffId;
-    @Basic
+    private Byte staffId;
+    
     @Column(name = "first_name", length = 45)
     private String firstName;
-    @Basic
+    
     @Column(name = "last_name", length = 45)
     private String lastName;
-    @Basic
-    @Column(name = "address_id")
-    private Integer addressId;
-    @Basic
-    @Column(name = "picture")
-    private Blob picture;
-    @Basic
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", columnDefinition = "SMALLINT")
+    private Address address;
+    
+    @Column(name = "picture", columnDefinition = "BLOB")
+    private byte[] picture;
+    
     @Column(name = "email", length = 50)
     private String email;
-    @Basic
-    @Column(name = "store_id")
-    private Integer storeId;
-    @Basic
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", columnDefinition = "TINYINT")
+    private Store store;
+    
     @Column(name = "active")
-    private boolean active;
-    @Basic
+    private Byte active;
+    
     @Column(name = "username", length = 16)
     private String username;
-    @Basic
+    
     @Column(name = "password", length = 40)
     private String password;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Staff staff = (Staff) o;
-        return active == staff.active
-                && Objects.equals(staffId, staff.staffId)
-                && Objects.equals(firstName, staff.firstName)
-                && Objects.equals(lastName, staff.lastName)
-                && Objects.equals(addressId, staff.addressId)
-                && Objects.equals(picture, staff.picture)
-                && Objects.equals(email, staff.email)
-                && Objects.equals(storeId, staff.storeId)
-                && Objects.equals(username, staff.username)
-                && Objects.equals(password, staff.password)
-                && Objects.equals(lastUpdate, staff.lastUpdate);
+        return Objects.equals(staffId, staff.staffId) && Objects.equals(firstName, staff.firstName) && Objects.equals(lastName, staff.lastName) && Objects.equals(address, staff.address) && Arrays.equals(picture, staff.picture) && Objects.equals(email, staff.email) && Objects.equals(store, staff.store) && Objects.equals(active, staff.active) && Objects.equals(username, staff.username) && Objects.equals(password, staff.password) && Objects.equals(lastUpdate, staff.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(staffId, firstName, lastName, addressId, picture, email, storeId, active, username, password, lastUpdate);
+        int result = Objects.hash(staffId, firstName, lastName, address, email, store, active, username, password, lastUpdate);
+        result = 31 * result + Arrays.hashCode(picture);
+        return result;
     }
 }

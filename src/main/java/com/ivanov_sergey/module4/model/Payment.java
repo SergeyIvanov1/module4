@@ -1,6 +1,7 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,47 +15,51 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "payment", schema = "module4")
+@Table(name = "payment", schema = "movie")
 public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "payment_id")
-    private Integer paymentId;
-    @Basic
-    @Column(name = "customer_id")
-    private Integer customerId;
-    @Basic
-    @Column(name = "staff_id")
-    private Integer staffId;
-    @Basic
-    @Column(name = "rental_id")
-    private Integer rentalId;
-    @Basic
+    private Short paymentId;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", columnDefinition = "SMALLINT")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id", columnDefinition = "TINYINT")
+    private Staff staff;
+
+    @ManyToOne
+    @JoinColumn(name = "rental_id", columnDefinition = "INT")
+    private Rental rentalId;
+
     @Column(name = "amount")
-    private Double amount;
-    @Basic
-    @Column(name = "payment_date")
+    private BigDecimal amount;
+
+    @Column(name = "payment_date", columnDefinition = "DATETIME")
     private LocalDateTime paymentDate;
-    @Basic
-    @Column(name = "last_update")
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
     private Timestamp lastUpdate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Payment that = (Payment) o;
-        return Objects.equals(paymentId, that.paymentId)
-                && Objects.equals(customerId, that.customerId)
-                && Objects.equals(staffId, that.staffId)
-                && Objects.equals(rentalId, that.rentalId)
-                && Objects.equals(amount, that.amount)
-                && Objects.equals(paymentDate, that.paymentDate)
-                && Objects.equals(lastUpdate, that.lastUpdate);
+        Payment payment = (Payment) o;
+        return Objects.equals(paymentId, payment.paymentId)
+                && Objects.equals(customer, payment.customer)
+                && Objects.equals(staff, payment.staff)
+                && Objects.equals(rentalId, payment.rentalId)
+                && Objects.equals(amount, payment.amount)
+                && Objects.equals(paymentDate, payment.paymentDate)
+                && Objects.equals(lastUpdate, payment.lastUpdate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(paymentId, customerId, staffId, rentalId, amount, paymentDate, lastUpdate);
+        return Objects.hash(paymentId, customer, staff, rentalId, amount, paymentDate, lastUpdate);
     }
 }

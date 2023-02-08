@@ -1,9 +1,11 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,35 +14,35 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "inventory", schema = "module4")
+@Table(name = "inventory", schema = "movie")
 public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "inventory_id")
     private Integer inventoryId;
-    @Basic
-    @Column(name = "film_id")
-    private Integer filmId;
-    @Basic
-    @Column(name = "store_id")
-    private Integer storeId;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "film_id", columnDefinition = "SMALLINT")
+    private Film film;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", columnDefinition = "TINYINT")
+    private Store store;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Inventory that = (Inventory) o;
-        return Objects.equals(inventoryId, that.inventoryId)
-                && Objects.equals(filmId, that.filmId)
-                && Objects.equals(storeId, that.storeId)
-                && Objects.equals(lastUpdate, that.lastUpdate);
+        Inventory inventory = (Inventory) o;
+        return Objects.equals(inventoryId, inventory.inventoryId) && Objects.equals(lastUpdate, inventory.lastUpdate) && Objects.equals(film, inventory.film) && Objects.equals(store, inventory.store);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inventoryId, filmId, storeId, lastUpdate);
+        return Objects.hash(inventoryId, lastUpdate, film, store);
     }
 }

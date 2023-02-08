@@ -1,9 +1,11 @@
 package com.ivanov_sergey.module4.model;
 
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,33 +14,35 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "address", schema = "module4")
+@Table(name = "address", schema = "movie")
 public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "address_id")
-    private Integer addressId;
+    private Short addressId;
     @Basic
     @Column(name = "address", length = 50)
     private String address;
-    @Basic
+
     @Column(name = "address2", length = 50)
     private String address2;
-    @Basic
-    @Column(name = "district")
+
+    @Column(name = "district", length = 20)
     private String district;
-    @Basic
-    @Column(name = "city_id")
-    private Integer cityId;
-    @Basic
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", columnDefinition = "SMALLINT")
+    private City cityId;
+
     @Column(name = "postal_code", length = 10)
     private String postalCode;
-    @Basic
+
     @Column(name = "phone", length = 20)
     private String phone;
-    @Basic
-    @Column(name = "last_update")
-    private Timestamp lastUpdate;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastUpdate;
 
     @Override
     public boolean equals(Object o) {

@@ -11,16 +11,16 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "film_text", schema = "module4")
+@Table(name = "film_text", schema = "movie")
 public class FilmText {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "film_id")
-    private Integer filmId;
-    @Basic
+    private Short filmId;
+
     @Column(name = "title", length = 255)
     private String title;
-    @Basic
+
     @Column(name = "description")
     private String description;
 
