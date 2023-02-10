@@ -20,12 +20,9 @@ public enum Rating {
 
 //    private static final Map<String, Rating> LOOKUP = Arrays.stream(values())
 //            .collect(Collectors.toMap(Rating::getValue, Function.identity()));
-//
-//
-//
-//    public String getValue() {
-//        return value;
-//    }
+    public String getValue() {
+        return value;
+    }
 //
 //    public static Rating fromString(final String rating) {
 //        // You may want to include handling for the case where the given string
